@@ -13,3 +13,9 @@ export function append(contact){
     contacts.push(contact);
     write(contacts);
 }
+
+export function del(contact){
+    const contacts=read();
+    contacts.pop(contact);
+    write(contacts);
+}

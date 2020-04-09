@@ -1,4 +1,4 @@
-import {append, read} from "./storage.js"
+import {append, read, del} from "./storage.js"
 
 export function init(){
     window.addEventListener("DOMContentLoaded", onLoad);
@@ -19,13 +19,25 @@ export function init(){
     }
 
     function onSubmitDelete(event){
-        
+        event.preventDefault();
+        console.log(event.target);
+        const contacts=read();
+        var checkboxes = document.getElementsByClassName('delete');
+        for (var i = 0; i < checkboxes.length; i++) {
+            var checkbox = checkboxes[i];
+            console.log(checkbox);
+            if(checkbox.checked){
+                del(contacts[i]);
+            }
+        }
+
+        render();
     }
 
     function render(){
         const contacts=read();
         const list=document.getElementById("list");
-        const items = contacts.map(contact=>`<li><input type="checkbox" name="delete"/>
+        const items = contacts.map(contact=>`<li><input type="checkbox" name="delete" class="delete"/>
         ${contact.name} &lt;${contact.email}&gt; {${contact.phone}}</li>`);
 
         list.innerHTML=items.join("");
