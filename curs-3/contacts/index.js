@@ -3,8 +3,31 @@ import { read, append, remove } from './storage.js';
 export function init() {
   document.getElementById('form-add').addEventListener('submit', onSubmitAdd);
   document.getElementById('form-delete').addEventListener('submit', onSubmitDelete);
-  document.getElementById('form-delete').addEventListener('change', onChangeDelete);
+  document.getElementById('form-delete').addEventListener('change', onChangeDelete);  
+
+  document.getElementById('form-delete').addEventListener('click', onClickSave);
+  document.getElementById('form-delete').addEventListener('click', onClickSave);
+  document.getElementById('form-delete').addEventListener('click', onClickCancel);
+
+  navigator.serviceWorker.register("sw.js");
+
   render();
+}
+
+
+function onClickSave(event){
+
+}
+
+function onClickCancel(event){
+
+}
+
+function onClickEdit(event){
+  const {form} =event.target;
+  const data=new FormData(form);
+  form.elements.name.readonly=false;
+
 }
 
 function onSubmitAdd(event) {
@@ -46,8 +69,13 @@ function render() {
       <li>
       <label>
         <input type="checkbox" name="id" value="${contact.id}">
-        ${contact.name} &lt;${contact.email || "NA"}&gt; [${contact.phone || "NA"}]
-        </label>
+        <input type="text" value="${contact.name}" readonly name="name">
+        <input type="text" value="${contact.email || "NA"}" readonly name="email">
+        <input type="text" value="${contact.phone || "NA"}" readonly name="phone">
+        <button name="edit">Edit</button>
+        <button hidden name="save">Save</button>
+        <button hidden name="cancel">Cancel</button>
+      </label>
       </li>
     `
   );
