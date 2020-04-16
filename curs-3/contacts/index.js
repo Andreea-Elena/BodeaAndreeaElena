@@ -1,48 +1,47 @@
-import {append, read, del} from "./storage.js"
+import { read, append, remove } from './storage.js';
 
-export function init(){
-    window.addEventListener("DOMContentLoaded", onLoad);
+export function init() {
+  document.getElementById('form-add').addEventListener('submit', onSubmitAdd);
+  document.getElementById('form-delete').addEventListener('submit', onSubmitDelete);
+  render();
+}
 
-    function onLoad(){
-        document.getElementById("form-add").addEventListener("submit",onSubmitAdd);         
-        document.getElementById("form-delete").addEventListener("submit",onSubmitDelete);
-        render();
-    }
+function onSubmitAdd(event) {
+  event.preventDefault();
+  const form = event.target;
+  const data = new FormData(form);
+  data.set('id', Date.now());
+  const contact = Object.fromEntries(data);
+  append(contact);
+  render();
+}
 
-    function onSubmitAdd(event){
-        event.preventDefault();
-        console.log(event.target);
-        const fd=new FormData(event.target);
-        const contact=Object.fromEntries(fd);
-        append(contact);
-        render();
-    }
+function onSubmitDelete(event) {
+  event.preventDefault();
+  const form=event.target;
+  const data = new FormData(form);
+  const contacts = read();
+  data.getAll('id').forEach(id=>{
+      const contact=contacts.find(contact=> contact.id===id);
+      if(contact){
+        remove(contact);
+      }
+  });
+  render();
+}
 
-    function onSubmitDelete(event){
-        event.preventDefault();
-        console.log(event.target);
-        const contacts=read();
-        var checkboxes = document.getElementsByClassName('delete');
-        for (var i = 0; i < checkboxes.length; i++) {
-            var checkbox = checkboxes[i];
-            console.log(checkbox);
-            if(checkbox.checked){
-                del(contacts[i]);
-            }
-        }
-
-        render();
-    }
-
-    function render(){
-        const contacts=read();
-        const list=document.getElementById("list");
-        const items = contacts.map(contact=>`<li><input type="checkbox" name="delete" class="delete"/>
-        ${contact.name} &lt;${contact.email}&gt; {${contact.phone}}</li>`);
-
-        list.innerHTML=items.join("");
-        const formDelete=document.getElementById("form-delete");
-        formDelete.hidden=contacts.length === 0;
-    }
-
+function render() {
+  const contacts = read();
+  const items = contacts.map(
+    contact => `
+      <li>
+      <label>
+        <input type="checkbox" name="id" value="${contact.id}">
+        ${contact.name} &lt;${contact.email || "NA"}&gt; [${contact.phone || "NA"}]
+        </label>
+      </li>
+    `
+  );
+  document.getElementById('list').innerHTML = items.join('');
+  document.getElementById('form-delete').hidden = contacts.length === 0;
 }
