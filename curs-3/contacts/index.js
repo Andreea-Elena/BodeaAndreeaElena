@@ -3,6 +3,7 @@ import { read, append, remove } from './storage.js';
 export function init() {
   document.getElementById('form-add').addEventListener('submit', onSubmitAdd);
   document.getElementById('form-delete').addEventListener('submit', onSubmitDelete);
+  document.getElementById('form-delete').addEventListener('change', onChangeDelete);
   render();
 }
 
@@ -28,6 +29,14 @@ function onSubmitDelete(event) {
       }
   });
   render();
+  event.target.elements.delete.disabled = true;
+}
+
+function onChangeDelete(event){
+  const data = new FormData(event.target.form);
+  const hasChecked = data.getAll('id').length > 0;
+  event.target.form.elements.delete.disabled = !hasChecked;
+  
 }
 
 function render() {
