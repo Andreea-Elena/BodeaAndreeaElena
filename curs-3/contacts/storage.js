@@ -22,3 +22,12 @@ export function remove(contact) {
   }
   write(contacts);
 }
+
+export function edit(contact, edit) {
+  const contacts = read();
+  const id = contacts.findIndex(element => element.id === contact);
+  if (id !== -1) {
+    contacts.splice(id, 1, edit);
+    write(contacts);
+  }
+}
