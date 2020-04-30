@@ -21,6 +21,7 @@ export class AppContent extends LitElement {
       <label
         >Please choose a year:
         <input type="number" name="year" min="2020" max="2030" value="2020" />
+        <input type="text" name="title" value="My app" />
       </label>
       <button>OK</button>
     </form>`;

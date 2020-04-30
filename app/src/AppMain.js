@@ -8,6 +8,7 @@ export class AppMain extends LitElement {
   static get properties() {
     return {
       year: { type: Number },
+      title: { type: String },
     };
   }
 
@@ -17,12 +18,13 @@ export class AppMain extends LitElement {
   }
   render() {
     return html`
-    <app-header title="My app"></app-header>
+    <app-header .title=${this.title}></app-header>
     <app-content @year-change=${this._onYearChanged}></app-content>
     <app-footer .year=${this.year}></footer>`;
   }
 
   _onYearChanged(event) {
     this.year = event.detail.year;
+    this.title = event.detail.title;
   }
 }
