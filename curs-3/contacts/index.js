@@ -25,7 +25,7 @@ function onClickSave(event){
   const contacts = read();
   data.set('id', save.value);
   console.log(data);
-  edit(contacts[save.value], editable);
+  edit(contacts.find(element=>element.id===save.value), editable);
 
   render();
 }

@@ -15,6 +15,7 @@ export class AppMain extends LitElement {
   constructor() {
     super();
     this.year = 2020;
+    this.title = 'My app';
   }
   render() {
     return html`
@@ -24,7 +25,7 @@ export class AppMain extends LitElement {
   }
 
   _onYearChanged(event) {
-    this.year = event.detail.year;
-    this.title = event.detail.title;
+    if (event.detail.year != '') this.year = event.detail.year;
+    if (event.detail.title != '') this.title = event.detail.title;
   }
 }

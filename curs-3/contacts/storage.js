@@ -25,9 +25,10 @@ export function remove(contact) {
 
 export function edit(contact, edit) {
   const contacts = read();
-  const id = contacts.findIndex(element => element.id === contact);
-  if (id !== -1) {
-    contacts.splice(id, 1, edit);
-    write(contacts);
-  }
+  const id = contacts.findIndex(element => element.name = edit.name,
+    element.email=edit.email, element.phone=edit.phone);
+  // if (id !== -1) {
+  //   contacts.splice(id, 1, edit);
+  //   write(contacts);
+  // }
 }
