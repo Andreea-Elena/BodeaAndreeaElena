@@ -1,29 +1,29 @@
 import { LitElement, html } from 'lit-element';
 
 import './Todo';
-import { remove } from './storage';
+import { read } from './storage';
 
 export class TodoList extends LitElement {
-  render() {
-    return html` <ul @click=${this._onRemoveTodo}></ul> `;
+
+  static get properties() {
+    return {
+      todos: {
+        type: Array,
+      },
+      todo: { type: String },
+      id: { type: String },
+      color: {type: String}
+    };
   }
 
-  _onRemoveTodo(event) {
-    event.preventDefault();
-      const todo = {
-        todo: event.target.todo,
-        id: event.target.id,
-      };
-      console.log(todo);
-      const newTodos = remove(todo);
-      const items = newTodos.map(
-        element => `
-      <app-todo todo="${element.todo}" id="${element.id}" ></app-todo>
-      `
-      );
-      this.shadowRoot.querySelector('ul').innerHTML = items.join('');
-      this.dispatchEvent(new CustomEvent('remove-todo', {composed: true, bubbles:true}));
+  render() {
+    const data = read();
+    this.todos = Object.values(data);
+    return html`  <ol>
+    ${this.todos.map(element => html`<app-todo todo=${element.todo} id=${element.id}}></app-todo>`)}
+  </ol>`;
   }
+
 }
 
 window.customElements.define('app-todo-list', TodoList);

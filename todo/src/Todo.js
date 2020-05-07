@@ -1,20 +1,23 @@
 import { LitElement, html, css } from 'lit-element';
+import { remove } from './storage';
 
 export class Todo extends LitElement {
-    static get properties() {
-        return {
-          todo: { type: String },
-          id: { type: Number },
-        };
-      }
-      render() {
-        return html`
-          <li>
-              <input type="text" readonly name="todo" id="todo" value="${this.todo}" />
-              <input type="button" name="delete" id="delete" value="Delete" />
-          </li>
+  static get properties() {
+    return {
+      todo: {
+        type: String,
+      },
+      id: { type: String },
+    };
+  }
+  render() {
+    return html`
+         <li>
+      ${this.todo}
+      <button @click=${() => remove(this.id)}>Remove</button>
+    </li> 
         `;
-      }
+  }
 }
 
 window.customElements.define('app-todo', Todo);
